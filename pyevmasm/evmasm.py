@@ -5,7 +5,7 @@ from builtins import map, next, range, object
 from future.builtins import next, bytes  # type: ignore
 import copy
 
-DEFAULT_FORK = "istanbul"
+DEFAULT_FORK = "arrow_glacier"
 
 """
     Example use::
@@ -976,6 +976,46 @@ istanbul_instruction_table = InstructionTable(  # type: ignore
     istanbul_instruction_table, previous_fork=serenity_instruction_table
 )
 
+muir_glacier_instruction_table = InstructionTable( #type: ignore
+    {}, previous_fork=istanbul_instruction_table
+)
+
+berlin_instruction_table = {
+    # EIP-2929, sans variable SSTORE changes
+    0x31: ("BALANCE", 0, 1, 1, 2600, "Get balance of the given account."),
+    0x3B: ("EXTCODESIZE", 0, 1, 1, 2600, "Get size of an account's code."),
+    0x3C: ("EXTCODECOPY", 0, 4, 0, 2600, "Copy an account's code to memory."),
+    0x3F: ("EXTCODEHASH", 0, 1, 1, 2600, "Get hash of code"),
+    0x54: ("SLOAD", 0, 1, 1, 2600, "Load word from storage."),
+    0xF1: ("CALL", 0, 7, 1, 2600, "Message-call into an account."),
+    0xF2: ("CALLCODE", 0, 7, 1, 2600, "Message-call into this account with alternative account's code."),
+    0xF4: (
+        "DELEGATECALL",
+        0,
+        6,
+        1,
+        2600,
+        "Message-call into this account with an alternative account's code, but persisting into this account with an alternative account's code.",
+    ),
+    0xFA: ("STATICCALL", 0, 6, 1, 2600, "Static message-call into an account."),
+    # EIP-2565 changes ModExp gas calculation to an algorithm, unimplemented here
+}
+berlin_instruction_table = InstructionTable( #type: ignore
+    berlin_instruction_table, previous_fork=muir_glacier_instruction_table
+)
+
+london_instruction_table = {
+    # EIP-3198
+    0x48: ("BASEFEE", 0, 0, 0, 2, "Returns the value of the base fee of the current block it is executing in."),
+}
+london_instruction_table = InstructionTable( #type: ignore
+    london_instruction_table, previous_fork=berlin_instruction_table
+)
+
+arrow_glacier_table = InstructionTable( #type: ignore
+    {}, previous_fork=london_instruction_table
+)
+
 accepted_forks = (
     "frontier",
     "homestead",
@@ -986,6 +1026,10 @@ accepted_forks = (
     "petersburg",
     "serenity",
     "istanbul",
+    "muir_glacier",
+    "berlin",
+    "london",
+    "arrow_glacier",
 )
 
 
