@@ -1043,6 +1043,10 @@ instruction_tables = {
     "petersburg": constantinople_instruction_table,  # constantinople table is intentional here: those two are aliases
     "serenity": serenity_instruction_table,
     "istanbul": istanbul_instruction_table,
+    "muir_glacier": muir_glacier_instruction_table,
+    "berlin": berlin_instruction_table,
+    "london": london_instruction_table,
+    "arrow_glacier": arrow_glacier_table,
 }
 
 
